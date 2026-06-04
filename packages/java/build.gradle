@@ -9,7 +9,7 @@ version = System.getenv('CONTRACT_VERSION') ?: '0.0.0'
 repositories { mavenCentral() }
 
 dependencies {
-  api 'com.google.protobuf:protobuf-java:4.28.2'
+  api 'com.google.protobuf:protobuf-java:4.29.3'
 }
 
 java { withSourcesJar() }
