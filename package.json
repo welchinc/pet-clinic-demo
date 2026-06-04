@@ -1,0 +1,18 @@
+{
+  "name": "petclinic-contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Spec-first domain contracts for the PetClinic domain. TypeSpec is the single source of truth; OpenAPI, JSON Schema, and Protobuf are generated artifacts.",
+  "type": "module",
+  "scripts": {
+    "build": "tsp compile .",
+    "clean": "tsp compile . --no-emit"
+  },
+  "dependencies": {
+    "@typespec/compiler": "1.12.0",
+    "@typespec/http": "1.12.0",
+    "@typespec/openapi3": "1.12.0",
+    "@typespec/json-schema": "1.12.0",
+    "@typespec/protobuf": "0.82.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "Pet.json",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "birthDate": {
+            "type": "string",
+            "format": "date"
+        },
+        "type": {
+            "$ref": "PetType.json"
+        },
+        "ownerId": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "id",
+        "name",
+        "birthDate",
+        "type",
+        "ownerId"
+    ]
+}

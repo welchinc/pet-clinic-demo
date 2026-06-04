@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "OwnerRegistered.json",
+    "type": "object",
+    "properties": {
+        "owner_id": {
+            "type": "string"
+        },
+        "first_name": {
+            "type": "string"
+        },
+        "last_name": {
+            "type": "string"
+        },
+        "city": {
+            "type": "string"
+        },
+        "occurred_at": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "owner_id",
+        "first_name",
+        "last_name",
+        "city",
+        "occurred_at"
+    ]
+}

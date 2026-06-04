@@ -1,0 +1,57 @@
+name: contract-release
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Derive version from tag (v1.2.3 -> 1.2.3)
+        run: echo "CONTRACT_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://npm.pkg.github.com"
+      - name: Compile TypeSpec
+        run: |
+          npm install
+          npx tsp compile .
+      # --- Publish TypeScript types to GitHub Packages (npm) ---
+      - name: Build + publish npm package
+        working-directory: packages/npm
+        run: |
+          npm version "$CONTRACT_VERSION" --no-git-tag-version
+          npm install
+          npm run build
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # --- Publish Java event stubs to GitHub Packages (Maven) ---
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+      - name: Generate Java stubs + publish
+        working-directory: packages/java
+        run: |
+          buf generate ../../ --template ../../buf.gen.yaml
+          gradle publish
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      # --- Register event schemas with the schema registry ---
+      - name: Register Protobuf schemas
+        run: ./scripts/register-schemas.sh
+        env:
+          SCHEMA_REGISTRY_URL: ${{ secrets.SCHEMA_REGISTRY_URL }}
+          SCHEMA_REGISTRY_AUTH: ${{ secrets.SCHEMA_REGISTRY_AUTH }}

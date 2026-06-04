@@ -1,0 +1,14 @@
+{
+  "name": "@petclinic-demo/contracts",
+  "version": "0.0.0",
+  "description": "Generated TypeScript types for the PetClinic domain contracts.",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "publishConfig": { "registry": "https://npm.pkg.github.com" },
+  "scripts": { "build": "node generate.mjs && tsc" },
+  "devDependencies": {
+    "json-schema-to-typescript": "^15.0.0",
+    "typescript": "^5.6.0"
+  }
+}

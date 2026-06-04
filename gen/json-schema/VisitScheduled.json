@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "VisitScheduled.json",
+    "type": "object",
+    "properties": {
+        "visit_id": {
+            "type": "string"
+        },
+        "pet_id": {
+            "type": "string"
+        },
+        "date": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "occurred_at": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "visit_id",
+        "pet_id",
+        "date",
+        "description",
+        "occurred_at"
+    ]
+}
