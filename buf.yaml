@@ -1,0 +1,16 @@
+version: v2
+modules:
+  - path: gen/protobuf
+lint:
+  use:
+    - STANDARD
+  except:
+    # The TypeSpec protobuf emitter writes a versioned package (petclinic.events.v1)
+    # to a file named after the last segment: petclinic/events/v1.proto. buf's
+    # PACKAGE_DIRECTORY_MATCH expects petclinic/events/v1/<file>.proto instead.
+    # This is structural to the emitter's file-per-package layout, not a contract
+    # defect, so we except this one rule. All other STANDARD rules stay enforced.
+    - PACKAGE_DIRECTORY_MATCH
+breaking:
+  use:
+    - FILE

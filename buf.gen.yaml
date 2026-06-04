@@ -1,0 +1,4 @@
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/java
+    out: packages/java/src/main/java

@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "PetRegistered.json",
+    "type": "object",
+    "properties": {
+        "pet_id": {
+            "type": "string"
+        },
+        "owner_id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "species": {
+            "type": "string"
+        },
+        "occurred_at": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "pet_id",
+        "owner_id",
+        "name",
+        "species",
+        "occurred_at"
+    ]
+}

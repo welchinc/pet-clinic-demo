@@ -1,0 +1,11 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "PetType.json",
+    "type": "string",
+    "enum": [
+        "cat",
+        "dog",
+        "bird",
+        "hamster"
+    ]
+}

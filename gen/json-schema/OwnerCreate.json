@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "OwnerCreate.json",
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "address": {
+            "type": "string"
+        },
+        "city": {
+            "type": "string"
+        },
+        "telephone": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "firstName",
+        "lastName",
+        "address",
+        "city",
+        "telephone"
+    ]
+}

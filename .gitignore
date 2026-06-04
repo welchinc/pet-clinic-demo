@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+packages/npm/node_modules/
+
+# Generated, NOT committed (produced at build/release time from gen/)
+packages/npm/src/
+packages/npm/dist/
+packages/java/src/main/java/
+packages/java/build/
+packages/java/.gradle/
+
+# TypeSpec scratch
+tsp-output/
+
+# Logs / OS
+*.log
+.DS_Store
+
+# NOTE: gen/ IS committed on purpose — the CI drift check diffs it against a
+# fresh `tsp compile`, so generated contract artifacts stay reviewable in PRs.

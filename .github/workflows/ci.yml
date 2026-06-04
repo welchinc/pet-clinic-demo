@@ -1,0 +1,38 @@
+name: contract-ci
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # needed so buf/oasdiff can diff against main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install + compile TypeSpec
+        run: |
+          npm install
+          npx tsp compile .
+      - name: Drift check (committed artifacts must match source of truth)
+        run: |
+          git diff --exit-code gen/ \
+            || (echo "::error::gen/ is stale. Run 'npx tsp compile .' and commit." && exit 1)
+      # --- Async surface (Protobuf) ---
+      - uses: bufbuild/buf-action@v1
+        with:
+          lint: true
+          breaking: true
+          breaking_against: "https://github.com/${{ github.repository }}.git#branch=main"
+      # --- Sync surface (OpenAPI) ---
+      - name: Spectral lint (OpenAPI)
+        run: npx --yes @stoplight/spectral-cli lint gen/openapi/openapi.yaml
+      - name: oasdiff breaking-change check (OpenAPI)
+        run: |
+          git show origin/main:gen/openapi/openapi.yaml > /tmp/base-openapi.yaml 2>/dev/null || exit 0
+          docker run --rm -v "$PWD":/work -v /tmp:/tmp tufin/oasdiff breaking \
+            /tmp/base-openapi.yaml /work/gen/openapi/openapi.yaml --fail-on ERR

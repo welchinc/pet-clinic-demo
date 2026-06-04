@@ -1,0 +1,332 @@
+openapi: 3.1.0
+info:
+  title: PetClinic Domain API
+  version: 0.0.0
+tags: []
+paths:
+  /owners:
+    get:
+      operationId: Owners_list
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Owner'
+    post:
+      operationId: Owners_create
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Owner'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OwnerCreate'
+  /owners/{ownerId}:
+    get:
+      operationId: Owners_read
+      parameters:
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Owner'
+  /owners/{ownerId}/pets:
+    get:
+      operationId: Pets_list
+      parameters:
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+    post:
+      operationId: Pets_register
+      parameters:
+        - name: ownerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetRegister'
+  /pets/{petId}/visits:
+    get:
+      operationId: Visits_list
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Visit'
+    post:
+      operationId: Visits_schedule
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visit'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisitSchedule'
+  /vets:
+    get:
+      operationId: Vets_list
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vet'
+components:
+  schemas:
+    Events.OwnerRegistered:
+      type: object
+      required:
+        - owner_id
+        - first_name
+        - last_name
+        - city
+        - occurred_at
+      properties:
+        owner_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        city:
+          type: string
+        occurred_at:
+          type: integer
+          format: int64
+    Events.PetRegistered:
+      type: object
+      required:
+        - pet_id
+        - owner_id
+        - name
+        - species
+        - occurred_at
+      properties:
+        pet_id:
+          type: string
+        owner_id:
+          type: string
+        name:
+          type: string
+        species:
+          type: string
+        occurred_at:
+          type: integer
+          format: int64
+    Events.VisitScheduled:
+      type: object
+      required:
+        - visit_id
+        - pet_id
+        - date
+        - description
+        - occurred_at
+      properties:
+        visit_id:
+          type: string
+        pet_id:
+          type: string
+        date:
+          type: string
+        description:
+          type: string
+        occurred_at:
+          type: integer
+          format: int64
+    Owner:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - address
+        - city
+        - telephone
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        telephone:
+          type: string
+    OwnerCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - address
+        - city
+        - telephone
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        telephone:
+          type: string
+    Pet:
+      type: object
+      required:
+        - id
+        - name
+        - birthDate
+        - type
+        - ownerId
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        type:
+          $ref: '#/components/schemas/PetType'
+        ownerId:
+          type: string
+    PetRegister:
+      type: object
+      required:
+        - name
+        - birthDate
+        - type
+      properties:
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        type:
+          $ref: '#/components/schemas/PetType'
+    PetType:
+      type: string
+      enum:
+        - cat
+        - dog
+        - bird
+        - hamster
+    Vet:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - specialties
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        specialties:
+          type: array
+          items:
+            type: string
+    Visit:
+      type: object
+      required:
+        - id
+        - petId
+        - date
+        - description
+      properties:
+        id:
+          type: string
+        petId:
+          type: string
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+    VisitSchedule:
+      type: object
+      required:
+        - date
+        - description
+      properties:
+        date:
+          type: string
+          format: date
+        description:
+          type: string
