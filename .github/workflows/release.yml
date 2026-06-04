@@ -41,17 +41,22 @@ jobs:
         with:
           setup_only: true
       - name: Generate Java stubs + publish
-        working-directory: packages/java
         run: |
-          buf generate ../../ --template ../../buf.gen.yaml
-          gradle publish
+          buf generate .
+          cd packages/java && gradle publish
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
       # --- Register event schemas with the schema registry ---
+      # Skip gracefully when SCHEMA_REGISTRY_URL is not configured.
       - name: Register Protobuf schemas
-        run: ./scripts/register-schemas.sh
+        run: |
+          if [[ -z "${SCHEMA_REGISTRY_URL:-}" ]]; then
+            echo "SCHEMA_REGISTRY_URL not set — skipping schema registry push"
+            exit 0
+          fi
+          ./scripts/register-schemas.sh
         env:
           SCHEMA_REGISTRY_URL: ${{ secrets.SCHEMA_REGISTRY_URL }}
           SCHEMA_REGISTRY_AUTH: ${{ secrets.SCHEMA_REGISTRY_AUTH }}

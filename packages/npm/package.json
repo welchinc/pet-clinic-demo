@@ -1,5 +1,5 @@
 {
-  "name": "@petclinic-demo/contracts",
+  "name": "@welchinc/petclinic-contracts",
   "version": "0.0.0",
   "description": "Generated TypeScript types for the PetClinic domain contracts.",
   "type": "module",
