@@ -29,7 +29,11 @@ jobs:
           npm version "$CONTRACT_VERSION" --no-git-tag-version
           npm install
           npm run build
-          npm publish
+          npm publish 2>&1 | tee /tmp/npm-pub.log; EC=${PIPESTATUS[0]}
+          if [[ $EC -ne 0 ]]; then
+            grep -q "409 Conflict" /tmp/npm-pub.log || exit $EC
+            echo "Version already published — skipping"
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # --- Publish Java event stubs to GitHub Packages (Maven) ---
@@ -43,7 +47,12 @@ jobs:
       - name: Generate Java stubs + publish
         run: |
           buf generate .
-          cd packages/java && gradle publish
+          cd packages/java
+          gradle publish 2>&1 | tee /tmp/gradle-pub.log; EC=${PIPESTATUS[0]}
+          if [[ $EC -ne 0 ]]; then
+            grep -q "409\|already exists" /tmp/gradle-pub.log || exit $EC
+            echo "Version already published — skipping"
+          fi
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
