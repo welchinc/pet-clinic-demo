@@ -27,3 +27,10 @@ message VisitScheduled {
   string description = 4;
   int64 occurred_at = 5;
 }
+
+message VisitCompleted {
+  string visit_id = 1;
+  string pet_id = 2;
+  string outcome = 3;
+  int64 occurred_at = 4;
+}
