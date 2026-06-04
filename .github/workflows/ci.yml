@@ -1,17 +1,21 @@
 name: contract-ci
 on:
   pull_request:
-  push:
-    branches-ignore: [main]
+
+# One run per PR ref; cancel superseded runs on rapid pushes. The gate runs on
+# pull_request only (where enforcement matters), so each push validates once.
+concurrency:
+  group: contract-ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0   # needed so buf/oasdiff can diff against main
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Install + compile TypeSpec
