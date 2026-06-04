@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "VisitCompleted.json",
+    "type": "object",
+    "properties": {
+        "visit_id": {
+            "type": "string"
+        },
+        "pet_id": {
+            "type": "string"
+        },
+        "outcome": {
+            "type": "string"
+        },
+        "occurred_at": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "visit_id",
+        "pet_id",
+        "outcome",
+        "occurred_at"
+    ]
+}

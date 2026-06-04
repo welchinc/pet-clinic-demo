@@ -182,6 +182,23 @@ components:
         occurred_at:
           type: integer
           format: int64
+    Events.VisitCompleted:
+      type: object
+      required:
+        - visit_id
+        - pet_id
+        - outcome
+        - occurred_at
+      properties:
+        visit_id:
+          type: string
+        pet_id:
+          type: string
+        outcome:
+          type: string
+        occurred_at:
+          type: integer
+          format: int64
     Events.VisitScheduled:
       type: object
       required:

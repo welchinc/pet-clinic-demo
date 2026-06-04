@@ -34,3 +34,10 @@ model VisitScheduled {
   @field(4) description: string;
   @field(5) occurred_at: int64;
 }
+
+model VisitCompleted {
+  @field(1) visit_id: string;
+  @field(2) pet_id: string;
+  @field(3) outcome: string;
+  @field(4) occurred_at: int64;
+}
